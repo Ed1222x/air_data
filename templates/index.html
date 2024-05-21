@@ -1,24 +1,36 @@
-<div class="container">
-    {% for suffix in ['B1', 'B2', 'B3', 'B4', 'B5'] %}
-        <div class="plot">
-            {% if suffix in plot_files_B %}
-                <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
-                <img src="{{ url_for('static', filename=plot_files_B[suffix]) }}" alt="{{ suffix }} Data Plot">
-            {% elif suffix in no_data_files_B %}
-                <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
-            {% endif %}
-        </div>
-    {% endfor %}
-</div>
-<div class="container">
-    {% for suffix in ['D1', 'D2', 'D3'] %}
-        <div class="plot">
-            {% if suffix in plot_files_D %}
-                <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
-                <img src="{{ url_for('static', filename=plot_files_D[suffix]) }}" alt="{{ suffix }} Data Plot">
-            {% elif suffix in no_data_files_D %}
-                <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
-            {% endif %}
-        </div>
-    {% endfor %}
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Plots</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        {% for suffix in ['B1', 'B2', 'B3', 'B4', 'B5'] %}
+            <div class="plot">
+                {% if suffix in plot_files_B %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
+                    <img src="{{ url_for('static', filename=plot_files_B[suffix]) }}" alt="{{ suffix }} Data Plot">
+                {% elif suffix in no_data_files_B %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        {% for suffix in ['D1', 'D2', 'D3'] %}
+            <div class="plot">
+                {% if suffix in plot_files_D %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
+                    <img src="{{ url_for('static', filename=plot_files_D[suffix]) }}" alt="{{ suffix }} Data Plot">
+                {% elif suffix in no_data_files_D %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
