@@ -219,6 +219,7 @@ def update_data():
         time.sleep(86400)  # 每天更新一次
 
 if __name__ == '__main__':
+    os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
     threading.Thread(target=update_data).start()
     app.run(debug=True)
 
