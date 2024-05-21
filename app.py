@@ -7,6 +7,7 @@ import time
 import matplotlib.dates as mdates
 
 # 設置 MPLCONFIGDIR 環境變量到 /tmp 目錄
+os.makedirs('/tmp/matplotlib', exist_ok=True)
 os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
 
 app = Flask(__name__)
