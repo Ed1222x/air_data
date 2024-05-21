@@ -6,6 +6,9 @@ import threading
 import time
 import matplotlib.dates as mdates
 
+# 設置 MPLCONFIGDIR 環境變量到 /tmp 目錄
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
+
 app = Flask(__name__)
 
 def read_yesterday_file(suffix):
@@ -215,3 +218,4 @@ def update_data():
 if __name__ == '__main__':
     threading.Thread(target=update_data).start()
     app.run(debug=True)
+
