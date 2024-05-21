@@ -11,7 +11,7 @@ app = Flask(__name__)
 def read_yesterday_file(suffix):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     filename = yesterday.strftime(f'%Y-%m-%d-{suffix}.txt')
-    filepath = os.path.join('D:\\air_data\\air_data\\data', filename)
+    filepath = os.path.join('data', filename)
     if not os.path.exists(filepath):
         print(f"File {filepath} does not exist. Skipping.")
         return []
@@ -151,7 +151,7 @@ def plot_data(data, suffix):
     plt.tight_layout()
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     plot_file_name = yesterday.strftime(f'%Y-%m-%d-{suffix}.png')
-    plt.savefig(os.path.join('D:\\air_data\\air_data\\data\\static', plot_file_name))
+    plt.savefig(os.path.join('static', plot_file_name))
     plt.close()
     return plot_file_name
     
