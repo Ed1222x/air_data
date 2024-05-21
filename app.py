@@ -10,6 +10,7 @@ import threading
 import time
 import matplotlib.dates as mdates
 
+
 app = Flask(__name__)
 
 
