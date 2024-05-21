@@ -1,4 +1,8 @@
 import os
+
+# 設置 MPLCONFIGDIR 環境變量到 /tmp 目錄
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
+
 import datetime
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, url_for
@@ -6,11 +10,8 @@ import threading
 import time
 import matplotlib.dates as mdates
 
-# 設置 MPLCONFIGDIR 環境變量到 /tmp 目錄
-os.makedirs('/tmp/matplotlib', exist_ok=True)
-os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
-
 app = Flask(__name__)
+
 
 def read_yesterday_file(suffix):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
