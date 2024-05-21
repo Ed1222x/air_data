@@ -3,30 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Data Plot</title>
+    <title>Flask App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Data Plot for {{ yesterday_date }}</h1>
-        
-        {% if plot_files_B %}
-            {% for suffix, plot_file in plot_files_B.items() %}
-                <h2>B{{ suffix[-1] }} Data Plot {{ yesterday_date }}</h2>
-                <img src="{{ url_for('static', filename=plot_file) }}" alt="Plot for B{{ suffix[-1] }}">
-            {% endfor %}
+        {% for suffix, plot_file in plot_files_B.items() %}
+            <h2>B{{ loop.index }} Data Plot {{ yesterday_date }}</h2>
+            <img src="{{ url_for('static', filename=plot_file) }}" alt="Plot for B{{ loop.index }}">
         {% else %}
-            <p class="no-data">No data for B files.</p>
-        {% endif %}
+            <p>No data for B files.</p>
+        {% endfor %}
 
-        {% if plot_files_D %}
-            {% for suffix, plot_file in plot_files_D.items() %}
-                <h2>D{{ suffix[-1] }} Data Plot {{ yesterday_date }}</h2>
-                <img src="{{ url_for('static', filename=plot_file) }}" alt="Plot for D{{ suffix[-1] }}">
-            {% endfor %}
+        {% for suffix, plot_file in plot_files_D.items() %}
+            <h2>D{{ loop.index }} Data Plot {{ yesterday_date }}</h2>
+            <img src="{{ url_for('static', filename=plot_file) }}" alt="Plot for D{{ loop.index }}">
         {% else %}
-            <p class="no-data">No data for D files.</p>
-        {% endif %}
+            <p>No data for D files.</p>
+        {% endfor %}
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
