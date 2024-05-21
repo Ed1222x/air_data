@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Plots</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            overflow-x: auto; /* 允許水平滾動 */
+        }
+        .plot {
+            text-align: center;
+            margin: 10px;
+        }
+        img {
+            width: 600px; /* 設置更大的固定寬度 */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% for suffix in ['B1', 'B2', 'B3', 'B4', 'B5'] %}
+            <div class="plot">
+                {% if suffix in plot_files_B %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
+                    <img src="{{ url_for('static', filename=plot_files_B[suffix]) }}" alt="{{ suffix }} Data Plot">
+                {% elif suffix in no_data_files_B %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        {% for suffix in ['D1', 'D2', 'D3'] %}
+            <div class="plot">
+                {% if suffix in plot_files_D %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }}</h1>
+                    <img src="{{ url_for('static', filename=plot_files_D[suffix]) }}" alt="{{ suffix }} Data Plot">
+                {% elif suffix in no_data_files_D %}
+                    <h1>{{ suffix }} Data Plot {{ yesterday_date }} No Data</h1>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
