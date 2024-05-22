@@ -5,12 +5,16 @@ os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
 
 import datetime
 import matplotlib.pyplot as plt
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, send_from_directory
 import threading
 import time
 import matplotlib.dates as mdates
 
 app = Flask(__name__)
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
 def read_yesterday_file(suffix):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
@@ -155,67 +159,25 @@ def plot_data(data, suffix):
     plt.tight_layout()
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     plot_file_name = yesterday.strftime(f'%Y-%m-%d-{suffix}.png')
-    # 將圖像保存到 /tmp 目錄
-    save_path = os.path.join('/tmp', plot_file_name)
-    plt.savefig(save_path)
-    plt.close()
-    return save_path
-
-@app.route('/')
-def index():
-    suffixes_B = ['B1', 'B2', 'B3', 'B4', 'B5']
-    suffixes_D = ['D1', 'D2', 'D3']
-    plot_files_B = {}
-    plot_files_D = {}
-    no_data_files_B = []
-    no_data_files_D = []
-    
-    for suffix in suffixes_B:
-        lines = read_yesterday_file(suffix)
-        if not lines:
-            no_data_files_B.append(suffix)
-            continue
-        data = parse_data(lines)
-        if not data["timestamp"]:  # 檢查是否有數據
-            no_data_files_B.append(suffix)
-            continue
-        plot_file_name = plot_data(data, suffix)
-        plot_files_B[suffix] = plot_file_name
-
-    for suffix in suffixes_D:
-        lines = read_yesterday_file(suffix)
-        if not lines:
-            no_data_files_D.append(suffix)
-            continue
-        data = parse_data(lines)
-        if not data["timestamp"]:  # 檢查是否有數據
-            no_data_files_D.append(suffix)
-            continue
-        plot_file_name = plot_data(data, suffix)
-        plot_files_D[suffix] = plot_file_name
-
-    yesterday_date = (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y/%m/%d')
-    
-    return render_template('index.html', 
-                           plot_files_B=plot_files_B, 
-                           plot_files_D=plot_files_D, 
-                           no_data_files_B=no_data_files_B, 
-                           no_data_files_D=no_data_files_D, 
-                           yesterday_date=yesterday_date)
+    plot_file_path = os.path.join('data', plot_file_name)
+    plt.savefig(plot_file_path)
+    plt.close(fig)
+    print(f"Plot saved as {plot_file_path}")
+    return plot_file_name
 
 def update_data():
     while True:
-        suffixes = ['B1', 'B2', 'B3', 'B4', 'B5', 'D1', 'D2', 'D3']
-        for suffix in suffixes:
+        time.sleep(60)  # 這裡的時間間隔可以根據實際需求進行調整
+        for suffix in ["office", "factory"]:
             lines = read_yesterday_file(suffix)
-            if not lines:
-                continue
             data = parse_data(lines)
-            if not data["timestamp"]:  # 檢查是否有數據
-                continue
-            plot_data(data, suffix)
-        time.sleep(86400)  # 每天更新一次
+            if data["timestamp"]:
+                plot_data(data, suffix)
+
+@app.route('/')
+def index():
+    return "Data plotting service is running."
 
 if __name__ == '__main__':
     threading.Thread(target=update_data).start()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
